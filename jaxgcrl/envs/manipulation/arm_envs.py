@@ -1,3 +1,5 @@
+import os
+
 import jax
 from brax import base
 from brax.envs.base import PipelineEnv, State
@@ -9,7 +11,12 @@ class ArmEnvs(PipelineEnv):
     def __init__(self, backend="mjx", **kwargs):
         # Configure environment information (e.g. env name, noise scale, observation dimension, goal indices) and load XML
         self._set_environment_attributes()
-        xml_path = self._get_xml_path()
+        xml_path = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            "..",
+            "assets",
+            self._get_xml_filename(),
+        )
         sys = mjcf.load(xml_path)
 
         # Configure backend
@@ -190,7 +197,7 @@ class ArmEnvs(PipelineEnv):
         return converted_action
 
     # Methods to be overridden by specific environments
-    def _get_xml_path(self):
+    def _get_xml_filename(self):
         raise NotImplementedError
 
     def _set_environment_attributes(self):

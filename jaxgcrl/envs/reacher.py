@@ -50,7 +50,9 @@ class Reacher(PipelineEnv):
             "reward_dist": zero,
             "reward_ctrl": zero,
             "success": zero,
+            "success_easy": zero,
             "dist": zero,
+            "distance_from_origin": zero,
         }
         state = State(pipeline_state, obs, reward, done, metrics)
         return state
@@ -71,7 +73,13 @@ class Reacher(PipelineEnv):
         else:
             reward = success
 
-        state.metrics.update(reward_dist=reward_dist, success=success, dist=dist)
+        state.metrics.update(
+            reward_dist=reward_dist,
+            success=success,
+            success_easy=jnp.array(dist < 0.2, dtype=float),
+            dist=dist,
+            distance_from_origin=math.safe_norm(pipeline_state.x.pos[0]),
+        )
         return state.replace(pipeline_state=pipeline_state, obs=obs, reward=reward)
 
     def _get_obs(self, pipeline_state: base.State) -> jax.Array:

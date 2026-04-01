@@ -70,6 +70,7 @@ class Halfcheetah(PipelineEnv):
             "dist": zero,
             "success": zero,
             "success_easy": zero,
+            "distance_from_origin": zero,
         }
         state = State(pipeline_state, obs, reward, done, metrics)
         return state
@@ -102,6 +103,7 @@ class Halfcheetah(PipelineEnv):
             dist=dist,
             success=success,
             success_easy=success_easy,
+            distance_from_origin=pipeline_state.x.pos[0, 0],
         )
 
         return state.replace(pipeline_state=pipeline_state, obs=obs, reward=reward)

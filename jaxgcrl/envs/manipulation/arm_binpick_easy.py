@@ -14,8 +14,8 @@ See _get_obs() and ArmEnvs._convert_action() for details.
 
 
 class ArmBinpickEasy(ArmEnvs):
-    def _get_xml_path(self):
-        return "envs/assets/panda_binpick_easy.xml"
+    def _get_xml_filename(self):
+        return "panda_binpick_easy.xml"
 
     @property
     def action_size(self) -> int:

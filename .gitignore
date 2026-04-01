@@ -299,6 +299,7 @@ pyrightconfig.json
 
 # Built Visual Studio Code Extensions
 *.vsix
+.claude
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
@@ -319,3 +320,4 @@ experiments/
 notebooks/data/
 notebooks/figures/
 
+screenlog.*

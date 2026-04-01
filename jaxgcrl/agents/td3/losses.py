@@ -77,7 +77,10 @@ def make_losses(
         new_actions = policy_network.apply(normalizer_params, policy_params, transitions.observation)
         q_new_actions = q_network.apply(normalizer_params, q_params, transitions.observation, new_actions)
         q_new_actions, _ = jnp.split(q_new_actions, 2, axis=-1)
-        lmbda = jax.lax.stop_gradient(bc * alpha / jnp.mean(jnp.abs(q_new_actions)) + (1 - bc))
+        q_abs_mean = jnp.mean(jnp.abs(q_new_actions))
+        lmbda = jax.lax.stop_gradient(
+            jnp.where(bc, alpha / jnp.maximum(q_abs_mean, 1e-8), 1.0)
+        )
         q_mean = jnp.mean(q_new_actions)
         return -lmbda * q_mean + bc * mean_squared_error(new_actions, transitions.action)
 

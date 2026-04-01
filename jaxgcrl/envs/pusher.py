@@ -83,7 +83,10 @@ class Pusher(PipelineEnv):
             "reward_ctrl": zero,
             "reward_near": zero,
             "success": zero,
+            "success_easy": zero,
             "success_hard": zero,
+            "dist": zero,
+            "distance_from_origin": zero,
         }
 
         state = State(pipeline_state, obs, reward, done, metrics)
@@ -117,7 +120,10 @@ class Pusher(PipelineEnv):
             reward_dist=reward_dist,
             reward_ctrl=reward_ctrl,
             success=success,
+            success_easy=jnp.array(obj_to_goal_dist < 0.2, dtype=float),
             success_hard=jnp.array(obj_to_goal_dist < 0.05, dtype=float),
+            dist=obj_to_goal_dist,
+            distance_from_origin=math.safe_norm(pipeline_state.x.pos[0]),
         )
         return state.replace(pipeline_state=pipeline_state, obs=obs, reward=reward)
 
@@ -203,7 +209,10 @@ class PusherReacher(PipelineEnv):
             "reward_ctrl": zero,
             "reward_near": zero,
             "success": zero,
+            "success_easy": zero,
             "success_hard": zero,
+            "dist": zero,
+            "distance_from_origin": zero,
         }
 
         state = State(pipeline_state, obs, reward, done, metrics)
@@ -229,7 +238,10 @@ class PusherReacher(PipelineEnv):
             reward_dist=reward_dist,
             reward_ctrl=0.0,
             success=jnp.array(arm_to_goal_dist < 0.1, dtype=float),
+            success_easy=jnp.array(arm_to_goal_dist < 0.2, dtype=float),
             success_hard=jnp.array(arm_to_goal_dist < 0.05, dtype=float),
+            dist=arm_to_goal_dist,
+            distance_from_origin=math.safe_norm(pipeline_state.x.pos[0]),
         )
         return state.replace(pipeline_state=pipeline_state, obs=obs, reward=reward)
 

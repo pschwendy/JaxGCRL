@@ -202,9 +202,9 @@ class CRL:
         env_steps_per_actor_step = config.num_envs * self.unroll_length
         num_prefill_env_steps = self.min_replay_size * config.num_envs
         num_prefill_actor_steps = np.ceil(self.min_replay_size / self.unroll_length)
-        num_training_steps_per_epoch = (config.total_env_steps - num_prefill_env_steps) // (
-            config.num_evals * env_steps_per_actor_step
-        )
+        num_training_steps_per_epoch = int(np.ceil(
+            (config.total_env_steps - num_prefill_env_steps) / (config.num_evals * env_steps_per_actor_step)
+        ))
 
         assert num_training_steps_per_epoch > 0, (
             "total_env_steps too small for given num_envs and episode_length"
@@ -601,4 +601,9 @@ class CRL:
 
         logging.info("total steps: %s", total_steps)
 
+        params = (
+            training_state.alpha_state.params,
+            training_state.actor_state.params,
+            training_state.critic_state.params,
+        )
         return make_policy, params, metrics

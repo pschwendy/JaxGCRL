@@ -14,8 +14,8 @@ See _get_obs() and ArmEnvs._convert_action() for details.
 
 
 class ArmGrasp(ArmEnvs):
-    def _get_xml_path(self):
-        return "envs/assets/panda_grasp.xml"
+    def _get_xml_filename(self):
+        return "panda_grasp.xml"
 
     @property
     def action_size(self) -> int:
