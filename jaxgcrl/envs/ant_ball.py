@@ -108,6 +108,7 @@ class AntBall(PipelineEnv):
             "dist": zero,
             "success": zero,
             "success_easy": zero,
+            "success_super_easy": zero,
         }
         state = State(pipeline_state, obs, reward, done, metrics)
         return state
@@ -138,6 +139,7 @@ class AntBall(PipelineEnv):
         vel_to_target = (old_dist - dist) / self.dt
         success = jnp.array(dist < self.goal_reach_thresh, dtype=float)
         success_easy = jnp.array(dist < 2.0, dtype=float)
+        success_super_easy = jnp.array(dist < 5.0, dtype=float)
 
         if self.dense_reward:
             reward = 10 * vel_to_target + healthy_reward - ctrl_cost - contact_cost
@@ -159,6 +161,7 @@ class AntBall(PipelineEnv):
             dist=dist,
             success=success,
             success_easy=success_easy,
+            success_super_easy=success_super_easy,
         )
         return state.replace(pipeline_state=pipeline_state, obs=obs, reward=reward, done=done)
 

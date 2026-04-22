@@ -79,13 +79,30 @@ def main(config: Config):
         "eval/episode_success",
         "eval/episode_success_any",
         "eval/episode_success_easy",
+        "eval/episode_success_super_easy",
         "eval/episode_success_hard",
+        "eval/avg_episode_length",
         "training/actor_loss",
         "training/log_alpha",
         "training/alpha_loss",
         "training/critic_loss",
         "training/entropy",
         "training/sps",
+        # SCC-RL / CVAE sampler metrics
+        "training/cvae_loss",
+        "training/cvae_elbo",
+        "training/cvae_recon_loss",
+        "training/cvae_kl_loss",
+        "training/cvae_alignment",
+        "training/cvae_improvement_frac",
+        # Subgoal quality diagnostics (all episodes)
+        "eval/subgoal_dist_to_goal",
+        "eval/subgoal_dist_to_state",
+        # Subgoal quality split by outcome
+        "eval/failed_subgoal_dist_to_goal",
+        "eval/failed_subgoal_dist_to_state",
+        "eval/success_subgoal_dist_to_goal",
+        "eval/success_subgoal_dist_to_state",
     ]
 
     metrics_recorder = MetricsRecorder(

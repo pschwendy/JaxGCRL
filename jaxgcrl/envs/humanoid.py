@@ -120,6 +120,7 @@ class Humanoid(PipelineEnv):
             "y_velocity": zero,
             "success": zero,
             "success_easy": zero,
+            "success_super_easy": zero,
         }
 
         state = State(pipeline_state, obs, reward, done, metrics)
@@ -157,6 +158,7 @@ class Humanoid(PipelineEnv):
 
         success = jnp.array(distance_to_target < self.goal_reach_thresh, dtype=float)
         success_easy = jnp.array(distance_to_target < 2.0, dtype=float)
+        success_super_easy = jnp.array(distance_to_target < 5.0, dtype=float)
 
         if self.dense_reward:
             reward = -distance_to_target + healthy_reward - ctrl_cost
@@ -178,6 +180,7 @@ class Humanoid(PipelineEnv):
             y_velocity=velocity[1],
             success=success,
             success_easy=success_easy,
+            success_super_easy=success_super_easy,
         )
         return state.replace(pipeline_state=pipeline_state, obs=obs, reward=reward, done=done)
 
