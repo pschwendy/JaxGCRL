@@ -10,3 +10,4 @@ from .sccrlv3 import SCCRLV3
 from .sccrlv4 import SCCRLV4
 from .sccrlv5 import SCCRLV5
 from .sccrlv6 import SCCRLV6
+from .sccrlv7 import SCCRLV7
