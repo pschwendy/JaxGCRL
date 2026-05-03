@@ -254,6 +254,7 @@ class HumanoidMaze(PipelineEnv):
             "y_velocity": zero,
             "success": zero,
             "success_easy": zero,
+            "success_super_easy": zero,
         }
 
         state = State(pipeline_state, obs, reward, done, metrics)
@@ -292,6 +293,7 @@ class HumanoidMaze(PipelineEnv):
         reward = -distance_to_target + healthy_reward - ctrl_cost
         success = jnp.array(distance_to_target < 0.5, dtype=float)
         success_easy = jnp.array(distance_to_target < 2.0, dtype=float)
+        success_super_easy = jnp.array(distance_to_target < 5.0, dtype=float)
         state.metrics.update(
             forward_reward=forward_reward,
             reward_linvel=forward_reward,
@@ -305,6 +307,7 @@ class HumanoidMaze(PipelineEnv):
             y_velocity=velocity[1],
             success=success,
             success_easy=success_easy,
+            success_super_easy=success_super_easy,
         )
         return state.replace(pipeline_state=pipeline_state, obs=obs, reward=reward, done=done)
 

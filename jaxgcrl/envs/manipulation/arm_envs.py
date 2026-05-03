@@ -59,7 +59,8 @@ class ArmEnvs(PipelineEnv):
         # Get components for state (observation, reward, metrics)
         obs = self._get_obs(pipeline_state, goal, timestep)
         reward, done, zero = jnp.zeros(3)
-        metrics = {"success": zero, "success_easy": zero, "success_hard": zero}
+        metrics = {"success": zero, "success_easy": zero, "success_hard": zero,
+                   "success_super_easy": zero, "dist": zero, "distance_from_origin": zero}
         return State(pipeline_state, obs, reward, done, metrics, info)
 
     def step(self, state: State, action: jax.Array) -> State:
@@ -82,7 +83,11 @@ class ArmEnvs(PipelineEnv):
         obs = self._get_obs(pipeline_state, state.info["goal"], timestep)
 
         success, success_easy, success_hard = self._compute_goal_completion(obs, state.info["goal"])
-        state.metrics.update(success=success, success_easy=success_easy, success_hard=success_hard)
+        n = self.completion_goal_indices.shape[0]
+        dist = jnp.linalg.norm(obs[self.completion_goal_indices] - state.info["goal"][:n])
+        success_super_easy = jnp.array(dist < 0.5, dtype=float)
+        state.metrics.update(success=success, success_easy=success_easy, success_hard=success_hard,
+                             success_super_easy=success_super_easy, dist=dist, distance_from_origin=dist)
 
         reward = success
         done = 0.0
