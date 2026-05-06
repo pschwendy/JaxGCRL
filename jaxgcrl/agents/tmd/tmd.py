@@ -110,11 +110,15 @@ def save_params(path: str, params: Any):
 class TMD:
     """Temporal Metric Distillation (TMD) agent.
 
-    Learns quasimetric representations via two complementary objectives:
-      - T-invariance: Bellman regression in quasimetric distance space.
-      - I-invariance: Offline actions incur near-zero immediate cost.
+    Critic loss = InfoNCE (like CRL) + zeta * (action invariance + LINEX backup).
 
-    The actor minimizes the quasimetric distance to the goal plus SAC entropy.
+    Action invariance: d_MRN(ψ(s), φ(s,a)) → 0 for offline transitions.
+    LINEX backup: d_MRN(φ(s,a), ψ(g)) ≈ d_MRN(ψ(s'), ψ(g)) + |log(γ)|.
+
+    Quasimetric: MRN (Metric Residual Network) with mrn_components components.
+    Requires repr_dim % (mrn_components * 2) == 0.
+
+    Actor minimizes MRN distance to goal plus SAC entropy regularization.
     """
 
     policy_lr: float = 3e-4
@@ -124,8 +128,17 @@ class TMD:
 
     discounting: float = 0.99
 
-    # Weight on I-invariance relative to T-invariance
-    i_invariance_coeff: float = 1.0
+    # MRN quasimetric: number of components (repr_dim must be divisible by mrn_components*2)
+    mrn_components: int = 4
+
+    # LINEX backup: clip threshold (linear regime for delta > linex_t)
+    linex_t: float = 3.0
+
+    # Weight on quasimetric terms (invariance + backup) relative to contrastive loss
+    linex_zeta: float = 0.05
+
+    # Blend of full-matrix backup (0.0) vs diagonal-only backup (1.0)
+    diag_backup: float = 0.5
 
     train_step_multiplier: int = 1
 
@@ -146,6 +159,9 @@ class TMD:
     def check_config(self, config):
         assert config.num_envs * (config.episode_length - 1) % self.batch_size == 0, (
             "num_envs * (episode_length - 1) must be divisible by batch_size"
+        )
+        assert self.repr_dim % (self.mrn_components * 2) == 0, (
+            f"repr_dim ({self.repr_dim}) must be divisible by mrn_components*2 ({self.mrn_components * 2})"
         )
 
     def train_fn(

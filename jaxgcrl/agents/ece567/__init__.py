@@ -12,3 +12,4 @@ from .sccrlv5 import SCCRLV5
 from .sccrlv6 import SCCRLV6
 from .sccrlv7 import SCCRLV7
 from .sccrlv8 import SCCRLV8
+from .hiro import HIRO

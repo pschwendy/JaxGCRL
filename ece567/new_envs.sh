@@ -54,74 +54,77 @@ TD3_HER_ARGS="td3 --discounting 0.99 --unroll_length 62 --use_her"
 # Batches 1-2 are full; the 2-run CRL overflow merges with SAC slow start (batch 3).
 
 # CRL batch 1: ant_hardest s0-4 + binpick s0-3
-CUDA_VISIBLE_DEVICES=0 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=3 python run.py --env ant_hardest_maze --num_envs 1024 --seed 3 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=5 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=6 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=7 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=8 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $CRL_ARGS &
-wait
+# CUDA_VISIBLE_DEVICES=0 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=1 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=2 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=3 python run.py --env ant_hardest_maze --num_envs 1024 --seed 3 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=5 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=6 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=7 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=8 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $CRL_ARGS &
+# wait
 
-# CRL batch 2: binpick s4 + hum_u s0-4 + hum_big s0-2
-CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env humanoid_u_maze --num_envs 512 --seed 0 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env humanoid_u_maze --num_envs 512 --seed 1 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=3 python run.py --env humanoid_u_maze --num_envs 512 --seed 2 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=4 python run.py --env humanoid_u_maze --num_envs 512 --seed 3 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=5 python run.py --env humanoid_u_maze --num_envs 512 --seed 4 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=6 python run.py --env humanoid_big_maze --num_envs 512 --seed 0 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=7 python run.py --env humanoid_big_maze --num_envs 512 --seed 1 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=8 python run.py --env humanoid_big_maze --num_envs 512 --seed 2 $CRL_ARGS &
-wait
+# # CRL batch 2: binpick s4 + hum_u s0-4 + hum_big s0-2
+# CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=1 python run.py --env humanoid_u_maze --num_envs 512 --seed 0 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=2 python run.py --env humanoid_u_maze --num_envs 512 --seed 1 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=3 python run.py --env humanoid_u_maze --num_envs 512 --seed 2 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=4 python run.py --env humanoid_u_maze --num_envs 512 --seed 3 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=5 python run.py --env humanoid_u_maze --num_envs 512 --seed 4 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=6 python run.py --env humanoid_big_maze --num_envs 512 --seed 0 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=7 python run.py --env humanoid_big_maze --num_envs 512 --seed 1 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=8 python run.py --env humanoid_big_maze --num_envs 512 --seed 2 $CRL_ARGS &
+# wait
 
 # CRL overflow + SAC slow start: hum_big s3-4 (CRL) + SAC ant_hardest s0-4 + SAC binpick s0-1
-CUDA_VISIBLE_DEVICES=0 python run.py --env humanoid_big_maze --num_envs 512 --seed 3 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env humanoid_big_maze --num_envs 512 --seed 4 $CRL_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=3 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=5 python run.py --env ant_hardest_maze --num_envs 1024 --seed 3 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=6 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=7 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=8 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $SAC_ARGS &
-wait
+# CUDA_VISIBLE_DEVICES=0 python run.py --env humanoid_big_maze --num_envs 512 --seed 3 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=1 python run.py --env humanoid_big_maze --num_envs 512 --seed 4 $CRL_ARGS &
+# CUDA_VISIBLE_DEVICES=2 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=3 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=5 python run.py --env ant_hardest_maze --num_envs 1024 --seed 3 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=6 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=7 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=8 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $SAC_ARGS &
+# wait
 
 # ── Section 3: Baselines — slow envs (ant_hardest_maze, arm_binpick_hard) ─────
 # 5 agents × 2 envs × 5 seeds = 50 runs; SAC ant_hardest s0-4 + SAC binpick s0-1 already done above.
 
 # SAC binpick s2-4 + TD3 ant_hardest s0-4 + TD3 binpick s0
-CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $SAC_ARGS &
+# CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $SAC_ARGS &
+CUDA_VISIBLE_DEVICES=0 python run.py --env ant_hardest_maze --num_envs 4096 --seed 0 $PPO_ARGS &
+CUDA_VISIBLE_DEVICES=1 python run.py --env ant_hardest_maze --num_envs 4096 --seed 1 $PPO_ARGS &
+CUDA_VISIBLE_DEVICES=2 python run.py --env ant_hardest_maze --num_envs 4096 --seed 2 $PPO_ARGS &
 CUDA_VISIBLE_DEVICES=3 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $TD3_ARGS &
 CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $TD3_ARGS &
 CUDA_VISIBLE_DEVICES=5 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $TD3_ARGS &
 CUDA_VISIBLE_DEVICES=6 python run.py --env ant_hardest_maze --num_envs 1024 --seed 3 $TD3_ARGS &
 CUDA_VISIBLE_DEVICES=7 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $TD3_ARGS &
-CUDA_VISIBLE_DEVICES=8 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $TD3_ARGS &
+CUDA_VISIBLE_DEVICES=8 python run.py --env ant_hardest_maze --num_envs 4096 --seed 4 $PPO_ARGS &
+# CUDA_VISIBLE_DEVICES=8 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $TD3_ARGS &
 wait
 
 # TD3 binpick s1-4 + PPO ant_hardest s0-4
-CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $TD3_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $TD3_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $TD3_ARGS &
-CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $TD3_ARGS &
-CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 4096 --seed 0 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=5 python run.py --env ant_hardest_maze --num_envs 4096 --seed 1 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=6 python run.py --env ant_hardest_maze --num_envs 4096 --seed 2 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=7 python run.py --env ant_hardest_maze --num_envs 4096 --seed 3 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=8 python run.py --env ant_hardest_maze --num_envs 4096 --seed 4 $PPO_ARGS &
-wait
+# CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $TD3_ARGS &
+# CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $TD3_ARGS &
+# CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $TD3_ARGS &
+# CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $TD3_ARGS &
 
 # PPO binpick s0-4 + SAC+HER ant_hardest s0-3
-CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 4096 --seed 0 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 4096 --seed 1 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 4096 --seed 2 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 4096 --seed 3 $PPO_ARGS &
-CUDA_VISIBLE_DEVICES=4 python run.py --env arm_binpick_hard --num_envs 4096 --seed 4 $PPO_ARGS &
+# CUDA_VISIBLE_DEVICES=0 python run.py --env arm_binpick_hard --num_envs 4096 --seed 0 $PPO_ARGS &
+# CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 4096 --seed 1 $PPO_ARGS &
+# CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 4096 --seed 2 $PPO_ARGS &
+# CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 4096 --seed 3 $PPO_ARGS &
+# CUDA_VISIBLE_DEVICES=4 python run.py --env arm_binpick_hard --num_envs 4096 --seed 4 $PPO_ARGS &
+CUDA_VISIBLE_DEVICES=0 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $SAC_HER_ARGS &
+CUDA_VISIBLE_DEVICES=1 python run.py --env ant_hardest_maze --num_envs 4096 --seed 3 $PPO_ARGS &
+CUDA_VISIBLE_DEVICES=2 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $TD3_HER_ARGS &
+CUDA_VISIBLE_DEVICES=3 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $TD3_HER_ARGS &
+CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $TD3_HER_ARGS &
 CUDA_VISIBLE_DEVICES=5 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $SAC_HER_ARGS &
 CUDA_VISIBLE_DEVICES=6 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $SAC_HER_ARGS &
 CUDA_VISIBLE_DEVICES=7 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $SAC_HER_ARGS &
@@ -129,28 +132,24 @@ CUDA_VISIBLE_DEVICES=8 python run.py --env ant_hardest_maze --num_envs 1024 --se
 wait
 
 # SAC+HER ant_hardest s4 + SAC+HER binpick s0-4 + TD3+HER ant_hardest s0-2
-CUDA_VISIBLE_DEVICES=0 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $SAC_HER_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $SAC_HER_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $SAC_HER_ARGS &
-CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $SAC_HER_ARGS &
-CUDA_VISIBLE_DEVICES=4 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $SAC_HER_ARGS &
-CUDA_VISIBLE_DEVICES=5 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $SAC_HER_ARGS &
-CUDA_VISIBLE_DEVICES=6 python run.py --env ant_hardest_maze --num_envs 1024 --seed 0 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=7 python run.py --env ant_hardest_maze --num_envs 1024 --seed 1 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=8 python run.py --env ant_hardest_maze --num_envs 1024 --seed 2 $TD3_HER_ARGS &
-wait
+
+# CUDA_VISIBLE_DEVICES=1 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $SAC_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $SAC_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $SAC_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=4 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $SAC_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=5 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $SAC_HER_ARGS &
+
+# wait
 
 # Slow → humanoid bridge: TD3+HER ant_hardest s3-4 + TD3+HER binpick s0-4 + SAC hum_u s0-1
-CUDA_VISIBLE_DEVICES=0 python run.py --env ant_hardest_maze --num_envs 1024 --seed 3 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=1 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=4 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=5 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=6 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $TD3_HER_ARGS &
-CUDA_VISIBLE_DEVICES=7 python run.py --env humanoid_u_maze --num_envs 512 --seed 0 $SAC_ARGS &
-CUDA_VISIBLE_DEVICES=8 python run.py --env humanoid_u_maze --num_envs 512 --seed 1 $SAC_ARGS &
-wait
+
+# CUDA_VISIBLE_DEVICES=2 python run.py --env arm_binpick_hard --num_envs 1024 --seed 0 $TD3_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=3 python run.py --env arm_binpick_hard --num_envs 1024 --seed 1 $TD3_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=4 python run.py --env arm_binpick_hard --num_envs 1024 --seed 2 $TD3_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=5 python run.py --env arm_binpick_hard --num_envs 1024 --seed 3 $TD3_HER_ARGS &
+# CUDA_VISIBLE_DEVICES=6 python run.py --env arm_binpick_hard --num_envs 1024 --seed 4 $TD3_HER_ARGS &
+
+# wait
 
 # ── Section 4: Baselines — humanoid mazes (hum_u, hum_big) ───────────────────
 # 5 agents × 2 envs × 5 seeds = 50 runs; SAC hum_u s0-1 already done above.
@@ -219,4 +218,8 @@ wait
 CUDA_VISIBLE_DEVICES=0 python run.py --env humanoid_big_maze --num_envs 512 --seed 2 $TD3_HER_ARGS &
 CUDA_VISIBLE_DEVICES=1 python run.py --env humanoid_big_maze --num_envs 512 --seed 3 $TD3_HER_ARGS &
 CUDA_VISIBLE_DEVICES=2 python run.py --env humanoid_big_maze --num_envs 512 --seed 4 $TD3_HER_ARGS &
+CUDA_VISIBLE_DEVICES=3 python run.py --env ant_hardest_maze --num_envs 1024 --seed 3 $TD3_HER_ARGS &
+CUDA_VISIBLE_DEVICES=4 python run.py --env ant_hardest_maze --num_envs 1024 --seed 4 $TD3_HER_ARGS &
+CUDA_VISIBLE_DEVICES=7 python run.py --env humanoid_u_maze --num_envs 512 --seed 0 $SAC_ARGS &
+CUDA_VISIBLE_DEVICES=8 python run.py --env humanoid_u_maze --num_envs 512 --seed 1 $SAC_ARGS &
 wait
